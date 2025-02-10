@@ -6,7 +6,7 @@
 /*   By: m.chiri <m.chiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 19:10:21 by m.chiri           #+#    #+#             */
-/*   Updated: 2025/02/07 12:17:49 by m.chiri          ###   ########.fr       */
+/*   Updated: 2025/02/10 20:04:29 by m.chiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,46 +39,31 @@ int ft_hexlen(unsigned int n) {
     return len;
 }
 
-// Función para resolver la impresión de números hexadecimales
-int ft_solve_hex(t_info *info)
-{
+int ft_solve_hex(t_info *info) {
     unsigned int n = va_arg(info->arguments, unsigned int);
     int len = ft_hexlen(n);
     int padding = info->width - len;
 
-    // Si el flag '#' está presente, agregar el prefijo '0x' o '0X'
-    if (info->flag[0] == '#')
-    {
-        if (n != 0)
-        {
-            ft_putchar_fd('0', 1);  // Imprimir el '0'
-            if (*info->format == 'x')
-                ft_putchar_fd('x', 1);  // Imprimir 'x' para minúsculas
-            else if (*info->format == 'X')
-                ft_putchar_fd('X', 1);  // Imprimir 'X' para mayúsculas
-            len += 2;  // El prefijo "0x" o "0X" agrega 2 caracteres
+    if (info->flag[0] == '#') {
+        if (n != 0) {
+            ft_putchar_fd('0', 1);  // Prefijo "0"
+            ft_putchar_fd(*info->format == 'x' ? 'x' : 'X', 1);  // Prefijo "0x" o "0X"
+            len += 2;  // El prefijo añade 2 a la longitud
         }
     }
 
-    // Rellenar con ceros si el flag '0' está presente y no hay '-'
-    if (info->flag[1] == '0' && info->flag[0] != '-')
-    {
-        while (padding-- > 0)
-            ft_putchar_fd('0', 1);  // Rellenar con ceros
+    if (info->flag[1] == '0' && info->flag[0] != '-') {
+        while (padding-- > 0) ft_putchar_fd('0', 1);  // Relleno con ceros
     }
 
-    // Imprimir el número hexadecimal
     if (*info->format == 'x')
-        ft_putnbr_hex_fd(n, 1);  // Minúsculas
+        ft_putnbr_hex_fd(n, 1);  // Imprime en minúsculas
     else if (*info->format == 'X')
-        ft_putnbr_hex_fd_upper(n, 1);  // Mayúsculas
+        ft_putnbr_hex_fd_upper(n, 1);  // Imprime en mayúsculas
 
-    // Si el flag '-' está presente, rellenar con espacios a la derecha
-    if (info->flag[0] == '-')
-    {
-        while (padding-- > 0)
-            ft_putchar_fd(' ', 1);  // Rellenar con espacios a la derecha
+    if (info->flag[0] == '-') {
+        while (padding-- > 0) ft_putchar_fd(' ', 1);  // Relleno con espacios a la derecha
     }
 
-    return len + (padding < 0 ? 0 : padding);  // Retorna la longitud total considerando el padding
+    return len + (padding < 0 ? 0 : padding);  // Retorna la longitud total
 }

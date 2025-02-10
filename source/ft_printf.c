@@ -6,7 +6,7 @@
 /*   By: m.chiri <m.chiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 12:47:13 by m.chiri           #+#    #+#             */
-/*   Updated: 2025/02/10 18:38:01 by m.chiri          ###   ########.fr       */
+/*   Updated: 2025/02/10 20:26:32 by m.chiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,10 @@
 #include "../libft/libft.h"
 
 // Procesa los flags antes de la conversión
-// Procesa los flags antes de la conversión
 int ft_process_flags(t_info *info)
 {
     // Inicializa las flags
-    info->flag[0] = '\0'; 
+    info->flag[0] = '\0';
     info->flag[1] = '\0';
 
     // Procesa los flags uno por uno
@@ -43,15 +42,12 @@ int ft_printf(const char *format, ...)
     t_info *info;
     int length = 0;
 
-    // Inicializa la estructura info
     info = (t_info *)ft_calloc(1, sizeof(t_info));
     va_start(info->arguments, format);
     info->format = format;
 
-    // Itera a través del formato de texto
     while (*info->format)
     {
-        // Imprime caracteres normales
         while (*info->format && *info->format != '%')
         {
             ft_putchar_fd(*info->format, 1);
@@ -59,33 +55,40 @@ int ft_printf(const char *format, ...)
             info->format++;
         }
 
-        // Si encontramos un '%', procesamos el especificador de formato
         if (*info->format && *info->format == '%')
         {
-            info->format++; // Avanza al siguiente carácter después de '%'
-            ft_process_flags(info);  // Procesa los flags antes de continuar
+            info->format++;
+            ft_process_flags(info);
 
-            // Procesa los diferentes especificadores de formato
+            // *** AÑADIDO: Extraer el ancho ***
+            info->width = 0; // Inicializar el ancho
+            while (ft_isdigit(*info->format))
+            {
+                info->width = info->width * 10 + (*info->format - '0');
+                info->format++;
+            }
+            // *** FIN DE AÑADIDO ***
+
             if (*info->format == 'd' || *info->format == 'i')
-                info->total_length += ft_solve_di(info);  // Llama a la función para enteros
+                info->total_length += ft_solve_di(info);
             else if (*info->format == 'u')
-                info->total_length += ft_solve_uint(info);  // Llama a la función para unsigned int
+                info->total_length += ft_solve_uint(info);
             else if (*info->format == 'x' || *info->format == 'X')
-                info->total_length += ft_solve_hex(info);  // Llama a la función para hexadecimales
+                info->total_length += ft_solve_hex(info);
             else if (*info->format == 's')
-                info->total_length += ft_solve_string(info);  // Llama a la función para strings
+                info->total_length += ft_solve_string(info);
             else if (*info->format == 'c')
-                info->total_length += ft_solve_char(info);  // Llama a la función para caracteres
+                info->total_length += ft_solve_char(info);
             else if (*info->format == '%')
-                info->total_length += ft_solve_percent(info);  // Llama a la función para '%' literal
+                info->total_length += ft_solve_percent(info);
             else
-                ft_putstr_fd("[ERROR]->", 1);  // Si el especificador es desconocido
-            info->format++;  // Avanza al siguiente carácter
+                ft_putstr_fd("[ERROR]->", 1);
+            info->format++;
         }
     }
 
-    va_end(info->arguments); // Finaliza el uso de va_list
+    va_end(info->arguments);
     length = info->total_length;
-    free(info); // Libera la memoria
+    free(info);
     return (length);
 }
