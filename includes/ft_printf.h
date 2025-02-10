@@ -6,7 +6,7 @@
 /*   By: m.chiri <m.chiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 10:01:30 by m.chiri           #+#    #+#             */
-/*   Updated: 2025/02/10 18:32:16 by m.chiri          ###   ########.fr       */
+/*   Updated: 2025/02/10 20:42:15 by m.chiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct s_info
     va_list     arguments;
     int         total_length;
     int         width;
-	char        flag[2];  // Añadido para almacenar los flags
+	char        flag[3];  // Añadido para almacenar los flags
 
 } t_info;
 

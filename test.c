@@ -151,7 +151,7 @@ int main(void)
     unsigned int u_num = 42;  // Un número entero sin signo para las pruebas
     unsigned int u_neg = 4294967254; // Un número negativo en formato unsigned
 
-    // 1. Prueba con la bandera #
+    //1. Prueba con la bandera #
     printf("Prueba 1.1: Original con %%#x: %x\n", u_num);
     ft_printf("Prueba 1.1: Propio con %%#x: %x\n", u_num);
     printf("\n");
@@ -160,6 +160,7 @@ int main(void)
     ft_printf("Prueba 1.2: Propio con %%#X: %X\n", u_num);
     printf("\n");
     
+    
     // 2. Prueba con la bandera 0
     printf("Prueba 2.1: Original con %%0d: %0d\n", num);
     ft_printf("Prueba 2.1: Propio con %%0d: %0d\n", num);
@@ -167,11 +168,10 @@ int main(void)
     
     // 3. Prueba con la bandera -
     printf("Prueba 3.1: Original con %%-5d: %-5d\n", num);
-    // Aquí se debería activar el punto de depuración de ft_solve_di
     ft_printf("Prueba 3.1: Propio con %%-5d: %-5d\n", num);
     printf("\n");
 
-    // 4. Prueba con la bandera +
+    //4. Prueba con la bandera +
     printf("Prueba 4.1: Original con %%+d: %+d\n", num);
     ft_printf("Prueba 4.1: Propio con %%+d: %+d\n", num);
     printf("\n");
@@ -183,7 +183,6 @@ int main(void)
     
     // 6. Ancho de campo
     printf("Prueba 6.1: Original con %%10d: %10d\n", num);
-    // Aquí se debería activar el punto de depuración de ft_solve_di
     ft_printf("Prueba 6.1: Propio con %%10d: %10d\n", num);
     printf("\n");
 
@@ -194,7 +193,6 @@ int main(void)
     
     // 8. Ancho de campo con ceros
     printf("Prueba 8.1: Original con %%05d: %05d\n", num);
-    // Aquí se debería activar el punto de depuración de ft_solve_di
     ft_printf("Prueba 8.1: Propio con %%05d: %05d\n", num);
     printf("\n");
 

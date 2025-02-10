@@ -6,14 +6,12 @@
 /*   By: m.chiri <m.chiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 12:47:13 by m.chiri           #+#    #+#             */
-/*   Updated: 2025/02/10 20:26:32 by m.chiri          ###   ########.fr       */
+/*   Updated: 2025/02/10 20:42:14 by m.chiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include "../libft/libft.h"
-
-// Procesa los flags antes de la conversión
 int ft_process_flags(t_info *info)
 {
     // Inicializa las flags
@@ -21,7 +19,7 @@ int ft_process_flags(t_info *info)
     info->flag[1] = '\0';
 
     // Procesa los flags uno por uno
-    while (*info->format == '-' || *info->format == '0' || *info->format == '+' || *info->format == ' ')
+    while (*info->format == '-' || *info->format == '0' || *info->format == '+' || *info->format == ' ' || *info->format == '#')
     {
         if (*info->format == '-')
             info->flag[0] = '-';  // Alineación a la izquierda
@@ -31,12 +29,14 @@ int ft_process_flags(t_info *info)
             info->flag[0] = '+';  // Mostrar signo explícito
         else if (*info->format == ' ')
             info->flag[0] = ' ';  // Espacio delante de números positivos
+        else if (*info->format == '#')
+            info->flag[2] = '#';  // Guardamos el flag '#' en una nueva posición
         info->format++;  // Avanza al siguiente carácter
     }
     return 0;
 }
 
-// Función principal ft_printf
+// Procesa los flags antes de la conversión
 int ft_printf(const char *format, ...)
 {
     t_info *info;
@@ -69,12 +69,15 @@ int ft_printf(const char *format, ...)
             }
             // *** FIN DE AÑADIDO ***
 
+            // Procesamiento de conversiones
             if (*info->format == 'd' || *info->format == 'i')
                 info->total_length += ft_solve_di(info);
             else if (*info->format == 'u')
                 info->total_length += ft_solve_uint(info);
             else if (*info->format == 'x' || *info->format == 'X')
                 info->total_length += ft_solve_hex(info);
+            else if (*info->format == 'o')  // Asegúrate de manejar 'o' para octales
+                info->total_length += ft_solve_o(info);  // Llamada a tu ft_solve_o
             else if (*info->format == 's')
                 info->total_length += ft_solve_string(info);
             else if (*info->format == 'c')
@@ -83,7 +86,7 @@ int ft_printf(const char *format, ...)
                 info->total_length += ft_solve_percent(info);
             else
                 ft_putstr_fd("[ERROR]->", 1);
-            info->format++;
+            info->format++;  // Avanzamos al siguiente carácter
         }
     }
 

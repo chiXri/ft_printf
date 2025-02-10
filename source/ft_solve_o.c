@@ -6,7 +6,7 @@
 /*   By: m.chiri <m.chiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 15:00:00 by m.chiri           #+#    #+#             */
-/*   Updated: 2025/02/07 12:00:14 by m.chiri          ###   ########.fr       */
+/*   Updated: 2025/02/10 20:40:40 by m.chiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int ft_octal_len(unsigned int n)
 }
 
 // Función para manejar la conversión de enteros con signos y octales
+// Función para manejar la conversión de octales con el flag '#'
 int ft_solve_o(t_info *info)
 {
     unsigned int n = va_arg(info->arguments, unsigned int);
@@ -43,8 +44,8 @@ int ft_solve_o(t_info *info)
     int padding = info->width - len;
     int total_len = len;
 
-    // Si el flag '#' está presente, agregar el prefijo '0'
-    if (info->flag[0] == '#')
+    // Si el flag '#' está presente, agregar el prefijo '0' solo si n no es 0
+    if (info->flag[2] == '#')  // Revisamos el flag '#' en el índice 2
     {
         if (n != 0)
         {
@@ -53,7 +54,7 @@ int ft_solve_o(t_info *info)
         }
     }
 
-    // Rellenar con ceros o espacios si corresponde
+    // Rellenar con ceros o espacios si corresponde (según el flag '0' o '-')
     if (info->flag[1] == '0' && info->flag[0] != '-')
     {
         while (padding-- > 0)
