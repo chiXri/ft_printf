@@ -6,7 +6,7 @@
 /*   By: m.chiri <m.chiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/04 19:05:50 by m.chiri           #+#    #+#             */
-/*   Updated: 2025/02/11 15:41:25 by m.chiri          ###   ########.fr       */
+/*   Updated: 2025/02/17 18:43:04 by m.chiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,40 +30,36 @@ int	ft_intlen(int n)
 	return (len);
 }
 
-int	ft_solve_di(t_info *info)
+static void	get_sign_info(int n, t_info *info, char *sign, int *sign_len)
 {
-	int n = va_arg(info->arguments, int);
-	int len = ft_intlen(n);
-	int width = info->width;
-	int padding = 0;
-	int sign_len = 0;
-	char sign = 0;
-	int num_len = len;
-
+	*sign_len = 0;
+	*sign = 0;
 	if (n < 0)
 	{
-		sign_len = 1;
-		sign = '-';
-		num_len--;
+		*sign_len = 1;
+		*sign = '-';
 	}
 	else if (info->flag[0] == '+')
 	{
-		sign_len = 1;
-		sign = '+';
+		*sign_len = 1;
+		*sign = '+';
 	}
 	else if (info->flag[0] == ' ')
 	{
-		sign_len = 1;
-		sign = ' ';
+		*sign_len = 1;
+		*sign = ' ';
 	}
+}
 
-	if (width > num_len + sign_len)
-	{
-		padding = width - num_len - sign_len;
-	}
+static int	get_padding(int num_len, int sign_len, t_info *info)
+{
+	if (info->width > num_len + sign_len)
+		return (info->width - num_len - sign_len);
+	return (0);
+}
 
-	len += sign_len;
-
+static void	print_number(int n, char sign, int padding, t_info *info)
+{
 	if (info->flag[0] == '-')
 	{
 		if (sign)
@@ -88,6 +84,23 @@ int	ft_solve_di(t_info *info)
 			ft_putchar_fd(sign, 1);
 		ft_putnbr_fd(n, 1);
 	}
+}
 
-	return (width > len ? width : len);
+int	ft_solve_di(t_info *info)
+{
+	int		n;
+	int		len;
+	int		sign_len;
+	int		padding;
+	char	sign;
+
+	n = va_arg(info->arguments, int);
+	len = ft_intlen(n);
+	get_sign_info(n, info, &sign, &sign_len);
+	padding = get_padding(len - (n < 0), sign_len, info);
+	len += sign_len;
+	print_number(n, sign, padding, info);
+	if (info->width > len)
+		return (info->width);
+	return (len);
 }

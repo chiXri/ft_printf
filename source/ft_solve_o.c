@@ -6,7 +6,7 @@
 /*   By: m.chiri <m.chiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 15:00:00 by m.chiri           #+#    #+#             */
-/*   Updated: 2025/02/11 15:42:59 by m.chiri          ###   ########.fr       */
+/*   Updated: 2025/02/11 16:17:58 by m.chiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,12 @@ int	ft_octal_len(unsigned int n)
 	return (len);
 }
 
+void	ft_print_padding(int padding, char c)
+{
+	while (padding-- > 0)
+		ft_putchar_fd(c, 1);
+}
+
 int	ft_solve_o(t_info *info)
 {
 	unsigned int	n;
@@ -46,29 +52,19 @@ int	ft_solve_o(t_info *info)
 	len = ft_octal_len(n);
 	padding = info->width - len;
 	total_len = len;
-	if (info->flag[2] == '#')
+	if (info->flag[2] == '#' && n != 0)
 	{
-		if (n != 0)
-		{
-			ft_putchar_fd('0', 1);
-			total_len++;
-		}
+		ft_putchar_fd('0', 1);
+		total_len++;
 	}
 	if (info->flag[1] == '0' && info->flag[0] != '-')
-	{
-		while (padding-- > 0)
-			ft_putchar_fd('0', 1);
-	}
+		ft_print_padding(padding, '0');
 	else if (info->flag[0] != '-')
-	{
-		while (padding-- > 0)
-			ft_putchar_fd(' ', 1);
-	}
+		ft_print_padding(padding, ' ');
 	ft_putnbr_octal_fd(n, 1);
 	if (info->flag[0] == '-')
-	{
-		while (padding-- > 0)
-			ft_putchar_fd(' ', 1);
-	}
-	return (total_len + (padding > 0 ? padding : 0));
+		ft_print_padding(padding, ' ');
+	if (padding > 0)
+		total_len += padding;
+	return (total_len);
 }
