@@ -6,7 +6,7 @@
 /*   By: m.chiri <m.chiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 12:47:13 by m.chiri           #+#    #+#             */
-/*   Updated: 2025/02/17 19:07:02 by m.chiri          ###   ########.fr       */
+/*   Updated: 2025/02/17 19:35:39 by m.chiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ void	ft_process_conversion(t_info *info)
 		info->total_length += ft_solve_char(info);
 	else if (*info->format == '%')
 		info->total_length += ft_solve_percent(info);
+	else if (*info->format == 'p')
+		info->total_length += ft_solve_pointer(info);
 	else
 		ft_putstr_fd("[ERROR]->", 1);
 	info->format++;
