@@ -3,7 +3,8 @@
         "ft_printf.h": "c",
         "libft.h": "c",
         "unistd.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "__config": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

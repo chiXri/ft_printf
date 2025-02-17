@@ -6,7 +6,7 @@
 /*   By: m.chiri <m.chiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 10:01:30 by m.chiri           #+#    #+#             */
-/*   Updated: 2025/02/11 15:45:46 by m.chiri          ###   ########.fr       */
+/*   Updated: 2025/02/17 19:41:48 by m.chiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,24 +20,6 @@
 # ifndef NULL_SIZE
 #  define NULL_SIZE 6
 # endif
-
-enum			e_flags
-{
-	e_minus,
-	e_zero
-};
-
-enum			e_dispatch
-{
-	e_char,
-	e_string,
-	e_pointer,
-	e_decimal_int,
-	e_u_dec_int,
-	e_u_hex_int,
-	e_percentage,
-	e_length
-};
 
 typedef struct s_info
 {
