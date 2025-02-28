@@ -6,44 +6,12 @@
 /*   By: m.chiri <m.chiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 12:47:13 by m.chiri           #+#    #+#             */
-/*   Updated: 2025/02/17 19:35:39 by m.chiri          ###   ########.fr       */
+/*   Updated: 2025/02/28 18:12:18 by m.chiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../libft/libft.h"
 #include "ft_printf.h"
-
-int	ft_process_flags(t_info *info)
-{
-	info->flag[0] = '\0';
-	info->flag[1] = '\0';
-	while (*info->format == '-' || *info->format == '0' || *info->format == '+'
-		|| *info->format == ' ' || *info->format == '#')
-	{
-		if (*info->format == '-')
-			info->flag[0] = '-';
-		else if (*info->format == '0')
-			info->flag[1] = '0';
-		else if (*info->format == '+')
-			info->flag[0] = '+';
-		else if (*info->format == ' ')
-			info->flag[0] = ' ';
-		else if (*info->format == '#')
-			info->flag[2] = '#';
-		info->format++;
-	}
-	return (0);
-}
-
-void	ft_process_width(t_info *info)
-{
-	info->width = 0;
-	while (ft_isdigit(*info->format))
-	{
-		info->width = info->width * 10 + (*info->format - '0');
-		info->format++;
-	}
-}
 
 void	ft_process_conversion(t_info *info)
 {
@@ -64,11 +32,15 @@ void	ft_process_conversion(t_info *info)
 	else if (*info->format == 'p')
 		info->total_length += ft_solve_pointer(info);
 	else
-		ft_putstr_fd("[ERROR]->", 1);
+	{
+		ft_putchar_fd('%', 1);
+		ft_putchar_fd(*info->format, 1);
+		info->total_length += 2;
+	}
 	info->format++;
 }
 
-void	ft_process_format(t_info *info)
+int	ft_process_format(t_info *info)
 {
 	while (*info->format)
 	{
@@ -81,23 +53,33 @@ void	ft_process_format(t_info *info)
 		if (*info->format == '%')
 		{
 			info->format++;
-			ft_process_flags(info);
-			ft_process_width(info);
 			ft_process_conversion(info);
 		}
 	}
+	return (0);
 }
 
 int	ft_printf(const char *format, ...)
 {
-	t_info	*info;
-	int		length;
+	t_info		*info;
+	int			length;
+	const char	*format_copy;
 
-	length = 0;
+	if (!format)
+		return (-1);
 	info = (t_info *)ft_calloc(1, sizeof(t_info));
+	if (!info)
+		return (-1);
+	info->total_length = 0;
 	va_start(info->arguments, format);
-	info->format = format;
-	ft_process_format(info);
+	format_copy = format;
+	info->format = format_copy;
+	if (ft_process_format(info) == -1)
+	{
+		va_end(info->arguments);
+		free(info);
+		return (-1);
+	}
 	va_end(info->arguments);
 	length = info->total_length;
 	free(info);

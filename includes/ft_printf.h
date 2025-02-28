@@ -6,7 +6,7 @@
 /*   By: m.chiri <m.chiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 10:01:30 by m.chiri           #+#    #+#             */
-/*   Updated: 2025/02/17 19:41:48 by m.chiri          ###   ########.fr       */
+/*   Updated: 2025/02/28 18:12:47 by m.chiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,11 @@
 # include <stdarg.h>
 # include <stdlib.h>
 
-# ifndef NULL_SIZE
-#  define NULL_SIZE 6
-# endif
-
 typedef struct s_info
 {
 	const char	*format;
 	va_list		arguments;
 	int			total_length;
-	int			width;
-	char		flag[3];
-
 }				t_info;
 
 int				ft_printf(const char *format, ...);

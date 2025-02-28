@@ -5,13 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: m.chiri <m.chiri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/04 19:10:21 by m.chiri           #+#    #+#             */
-/*   Updated: 2025/02/17 19:03:00 by m.chiri          ###   ########.fr       */
+/*   Created: 2025/02/28 11:45:00 by m.chiri           #+#    #+#             */
+/*   Updated: 2025/02/28 18:11:33 by m.chiri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../includes/ft_printf.h"
 #include "../libft/libft.h"
-#include "ft_printf.h" 
 
 int	ft_hexlen(unsigned int n)
 {
@@ -43,47 +43,13 @@ static void	ft_putnbr_hex_fd(unsigned int n, int fd, char specifier)
 		ft_putnbr_hex_fd_helper(n, fd, "0123456789ABCDEF");
 }
 
-static int	ft_handle_flags(t_info *info, unsigned int n, int len)
-{
-	int	padding;
-
-	padding = info->width - len;
-	if (info->flag[0] == '#')
-	{
-		if (n != 0)
-		{
-			ft_putchar_fd('0', 1);
-			if (*info->format == 'x')
-				ft_putchar_fd('x', 1);
-			else
-				ft_putchar_fd('X', 1);
-			len += 2;
-		}
-	}
-	if (info->flag[1] == '0' && info->flag[0] != '-')
-	{
-		while (padding-- > 0)
-			ft_putchar_fd('0', 1);
-	}
-	return (padding);
-}
-
 int	ft_solve_hex(t_info *info)
 {
 	unsigned int	n;
 	int				len;
-	int				padding;
 
 	n = va_arg(info->arguments, unsigned int);
 	len = ft_hexlen(n);
-	padding = ft_handle_flags(info, n, len);
 	ft_putnbr_hex_fd(n, 1, *info->format);
-	if (info->flag[0] == '-')
-	{
-		while (padding-- > 0)
-			ft_putchar_fd(' ', 1);
-	}
-	if (padding < 0)
-		return (len);
-	return (len + padding);
+	return (len);
 }

@@ -1,4 +1,3 @@
-
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
 INCLUDES = -I./includes -I./libft
@@ -17,8 +16,9 @@ all: $(LIBFT) $(NAME)
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR)
 
-$(NAME): $(OBJ)
+$(NAME): $(OBJ) $(LIBFT)
 	ar rcs $(NAME) $(OBJ)
+	libtool -static -o $(NAME) $(NAME) $(LIBFT)
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
@@ -34,7 +34,7 @@ fclean: clean
 re: fclean all
 
 test: all
-	$(CC) $(CFLAGS) $(INCLUDES) test.c $(NAME) $(LIBFT) -o test_program
+	$(CC) $(CFLAGS) $(INCLUDES) test.c $(NAME) -o test_program
 
 test_clean:
 	rm -f test_program
